@@ -1,0 +1,87 @@
+* {
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: black;
+    font-size: 0;
+    position:relative;
+}
+div.row div {
+    width: 20px;
+    height: 20px;
+    display:inline-block;
+}
+
+div.empty {
+
+}
+
+div.block {
+    background-color: blue;
+}
+
+div.coin {
+    background-image: url("images/coin.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px;
+}
+
+div.cherry {
+    background-image: url("images/cherry.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px;
+}
+
+#pacman {
+    background-image: url("images/pacman.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 19px;
+    height:20px;
+    width:20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+#ghost {
+    background-image: url("images/ghost.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 19px;
+    height:20px;
+    width:20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+#score {
+    border: 1px solid white;
+    position: absolute;
+    top: 10px;
+    left: 450px;
+    height: 20px;
+    width: 50px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    padding: 3px 0px;
+}
+#lives {
+    border: 1px solid white;
+    position: absolute;
+    top: 40px;
+    left: 450px;
+    height: 20px;
+    width: 50px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    padding: 3px 0px;
+}

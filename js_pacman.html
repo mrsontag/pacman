@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>PacMan Exercise</title>
+</head>
+<body>
+    <!-- <div class="row">
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+    </div>
+    <div class="row">
+        <div class="block"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="pacman"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="block"></div>
+    </div>
+    <div class="row">
+        <div class="block"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="block"></div>
+    </div>
+    <div class="row">
+        <div class="block"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="coin"></div>
+        <div class="block"></div>
+    </div>
+    <div class="row">
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+    </div> -->
+
+    <div id="world"></div>
+    <div id="pacman"></div>
+    <div id="ghost"></div>
+    <div id="score">0</div>
+    <div id="lives">5</div>
+    <script>
+    
+    var world = [];
+    var whichway = ["left", "up", "right", "down"];
+    var lives = 5;
+    var gridSize = 20;
+    var score = 0;
+    var pacman = {
+        x: 1,
+        y: 1,
+        facing: "right",
+        display: function() {
+            var pacstyle = document.getElementById("pacman").style
+            pacstyle.top = this.y * gridSize + "px";
+            pacstyle.left = this.x * gridSize + "px";
+            switch(this.facing) {
+                case "left":
+                    pacstyle.transform = "rotate(180deg)";
+                    break;
+                case "right":
+                    pacstyle.transform = "rotate(0deg)";
+                    break;
+                case "up":
+                    pacstyle.transform = "rotate(270deg)";
+                    break;
+                case "down":
+                    pacstyle.transform = "rotate(90deg)";
+                    break;
+            }
+        },
+        move: function(direction) {
+            if (this.isBlocked(direction)) {
+                return;
+            }
+            switch (direction) {
+                case "left": 
+                    this.x--;
+                    this.facing = "left";
+                    break;
+                case "right":
+                    this.x++;
+                    this.facing = "right";
+                    break;
+                case "up":
+                    this.y--;
+                    this.facing = "up";
+                    break;
+                case "down": 
+                    this.y++;
+                    this.facing = "down";
+                    break;
+            }
+            var redraw = false;
+            //if (pacman.x = ghost.x && pacman.y = ghost.y) {
+            //
+            //}
+            if (world[pacman.y][pacman.x] == 1) {
+                world[pacman.y][pacman.x] = 0
+                score += 10;
+                redraw = true;
+            }
+            else if (world[pacman.y][pacman.x] == 4) {
+                world[pacman.y][pacman.x] = 0
+                score += 50;
+                redraw = true;
+            }
+            pacman.display();
+            //ghost.display()
+            if (redraw) {
+                displayWorld();
+            }
+        },
+        isBlocked: function(direction) {
+            var newLoc = [0,0];
+            switch (direction) {
+                case "left": 
+                    newLoc = [this.x - 1, this.y];
+                    break;
+                case "right":
+                    newLoc = [this.x + 1, this.y];
+                    break;
+                case "up":
+                    newLoc = [this.x, this.y - 1];
+                    break;
+                case "down": 
+                    newLoc = [this.x, this.y + 1];
+                    break;
+            }
+            if (world[newLoc[1]][newLoc[0]]==2) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    var ghost = {
+        x: 11,
+        y: 8,
+        facing: "left",
+        display: function() {
+            var ghoststyle = document.getElementById("ghost").style
+            ghoststyle.top = this.y * gridSize + "px";
+            ghoststyle.left = this.x * gridSize + "px";
+        },
+        move: function() {
+            if (this.isBlocked(this.facing) || (Math.random() * 10) > 9 ) {
+                while(this.isBlocked(this.facing)) {
+                    console.log(this.facing);
+                    console.log(Math.floor(Math.random() * 4));
+                    this.facing = whichway[Math.floor(Math.random() * 4)];
+                    console.log(this.facing);
+                }
+                
+                // switch(this.facing) {
+                //     case "left": 
+                //         this.facing = "up";
+                //         break;
+                //     case "right":
+                //     this.facing = "down";
+                //         break;
+                //     case "up":
+                //     this.facing = "right";
+                //         break;
+                //     case "down": 
+                //     this.facing = "left";
+                //         break;
+                // }
+            }
+            switch (this.facing) {
+                case "left": 
+                    this.x--;
+                    break;
+                case "right":
+                    this.x++;
+                    break;
+                case "up":
+                    this.y--;
+                    break;
+                case "down": 
+                    this.y++;
+                    break;
+            }
+            var redraw = false;
+            //if (pacman.x = ghost.x && pacman.y = ghost.y) {
+            //
+            //}
+            if (world[pacman.y][pacman.x] == 1) {
+                world[pacman.y][pacman.x] = 0
+                score += 10;
+                redraw = true;
+            }
+            else if (world[pacman.y][pacman.x] == 4) {
+                world[pacman.y][pacman.x] = 0
+                score += 50;
+                redraw = true;
+            }
+            ghost.display();
+            //ghost.display()
+            if (redraw) {
+                displayWorld();
+            }
+        },
+        isBlocked: function(direction) {
+            var newLoc = [0,0];
+            switch (direction) {
+                case "left": 
+                    newLoc = [this.x - 1, this.y];
+                    break;
+                case "right":
+                    newLoc = [this.x + 1, this.y];
+                    break;
+                case "up":
+                    newLoc = [this.x, this.y - 1];
+                    break;
+                case "down": 
+                    newLoc = [this.x, this.y + 1];
+                    break;
+            }
+            if (world[newLoc[1]][newLoc[0]]==2) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    function resetworld() {
+
+        world = [
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+            [2,0,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,4,2],
+            [2,1,2,2,2,1,2,2,2,2,2,1,2,2,2,1,2,2,1,2],
+            [2,1,2,4,1,1,1,1,1,1,2,1,2,4,1,1,2,2,1,2],
+            [2,1,2,1,2,1,2,2,2,1,2,1,2,1,2,1,2,2,1,2],
+            [2,1,2,2,2,1,1,1,2,1,2,1,2,1,2,1,2,2,1,2],
+            [2,1,1,1,1,1,2,1,2,1,1,1,2,1,2,1,1,1,4,2],
+            [2,1,2,2,2,1,2,1,2,1,2,1,2,1,2,2,2,1,2,2],
+            [2,1,2,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,2],
+            [2,1,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,2,1,2],
+            [2,1,2,1,2,1,2,1,1,1,1,1,2,1,1,1,1,1,1,2],
+            [2,1,2,4,1,1,2,1,2,2,2,1,2,1,2,4,2,1,2,2],
+            [2,1,2,2,2,1,2,1,2,1,2,1,2,1,2,2,2,1,2,2],
+            [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2],
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+        ];
+        pacman.x = 1;
+        pacman.y = 1;
+        ghost.x = 11;
+        ghost.y = 8;
+        lives = 5;
+    }
+    
+    var classtypes = ["empty", "coin","block","pacman","cherry","ghost"]
+
+    function displayWorld() {
+        var output = '';
+        var nextclass = '';
+        for(row=0;row<world.length;row++) {
+            output = output + `\t<div class="row">\n`
+            for(col=0;col<world[row].length;col++) {
+                nextclass = classtypes[world[row][col]];
+                // switch(world[row][col]) {
+                //     case 3:
+                //         nextclass = 'pacman';
+                //         break;
+                //     case 2:
+                //         nextclass = 'block';
+                //         break;
+                //     case 1:
+                //         nextclass = 'coin';
+                //         break;
+                //     case 0: 
+                //         nextclass = 'empty';
+                //}
+                output = output + `\t\t<div class="${nextclass}"></div>\n`
+            }
+            output = output + `\t</div>\n`
+        }
+        document.getElementById('world').innerHTML = output;
+        document.getElementById('score').innerHTML = score;
+        document.getElementById('lives').innerHTML = lives;
+    }
+    resetworld();
+    displayWorld();
+    pacman.display();
+    ghost.display();
+    
+    var currentdirection = "left";
+    
+    function doMoves() {
+        pacman.move(currentdirection);
+        if (pacman.x == ghost.x && pacman.y == ghost.y) {
+            eaten();
+        }
+        ghost.move();
+        if (pacman.x == ghost.x && pacman.y == ghost.y) {
+            eaten();
+        }
+    }
+
+    function eaten() {
+        resetworld();
+        lives--;
+        if (lives = 0) {
+            window.alert("Game over! Click OK to restart.")
+            resetworld;
+        }
+        document.getElementById('lives').innerHTML = lives;
+    }
+        
+    document.onkeydown = function(keypressed) {
+        currentdirection = whichway[keypressed.keyCode-37];
+    }
+    window.onload = function() {
+        var mytimer = setInterval(doMoves, 500);
+    }
+    </script>
+</body>
+</html>
